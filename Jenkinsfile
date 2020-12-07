@@ -1,5 +1,5 @@
 pipeline {
-	agent "ansible-controller-node"
+	agent { label 'ansible-controller-node' }
 	stages {
 
 		stage('Echo Anything') {
