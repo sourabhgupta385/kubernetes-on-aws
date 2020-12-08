@@ -4,7 +4,6 @@ pipeline {
 
 		stage('Echo Anything') {
 			steps {
-				checkout scm
 				sh 'echo "Hello World!!!"'
 			}
 		}
