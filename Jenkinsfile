@@ -25,14 +25,17 @@ pipeline {
     
     stage('Terraform Plan') {
       steps {
-        sh "k8s-infra/terraform plan -input=false"
+        sh "cd k8s-infra && terraform plan -input=false"
       }
     }
     
     stage('Terraform Apply') {
+      input {
+        message "Approval to create Kubernetes Infra"
+        ok "Approve"
+      }
       steps {
-        input 'Apply Plan'
-        sh "k8s-infra/terraform apply -input=false tfplan"
+        sh "cd k8s-infra && terraform apply -input=false"
       }
     }
   }
