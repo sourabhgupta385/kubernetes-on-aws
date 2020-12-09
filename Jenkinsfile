@@ -19,7 +19,7 @@ pipeline {
     
     stage('Terraform Init') {
       steps {
-        sh "k8s-infra/terraform init -input=false"
+        sh "cd k8s-infra && terraform init -input=false"
       }
     }
     
