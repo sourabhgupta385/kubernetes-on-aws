@@ -35,7 +35,17 @@ pipeline {
         ok "Approve"
       }
       steps {
-        sh "cd k8s-infra && terraform apply -input=false k8s-infra-plan"
+        sh "cd k8s-infra && terraform apply -auto-approve -input=false k8s-infra-plan"
+      }
+    }
+
+    stage('Terraform Destroy') {
+      input {
+        message "Approval to delete Kubernetes Infra"
+        ok "Approve"
+      }
+      steps {
+        sh "cd k8s-infra && terraform destroy -auto-approve"
       }
     }
   }
