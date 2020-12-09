@@ -25,7 +25,7 @@ pipeline {
     
     stage('Terraform Plan') {
       steps {
-        sh "cd k8s-infra && terraform plan -input=false"
+        sh "cd k8s-infra && terraform plan -input=false -out k8s-infra-plan"
       }
     }
     
@@ -35,7 +35,7 @@ pipeline {
         ok "Approve"
       }
       steps {
-        sh "cd k8s-infra && terraform apply -input=false"
+        sh "cd k8s-infra && terraform apply -input=false k8s-infra-plan"
       }
     }
   }
