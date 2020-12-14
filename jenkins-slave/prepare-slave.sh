@@ -27,3 +27,8 @@ ansible --version
 # Create directory to store Jenkins data
 
 mkdir jenkins-data
+
+# Create directory to store ssh config files
+
+mkdir ~/.ssh/include
+
