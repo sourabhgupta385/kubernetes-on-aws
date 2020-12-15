@@ -3,7 +3,7 @@ pipeline {
   parameters {
     password (name: 'AWS_ACCESS_KEY_ID')
     password (name: 'AWS_SECRET_ACCESS_KEY')
-    password (name: 'AWS_DEFAULT_REGION')
+    password (name: 'AWS_DEFAULT_REGION', defaultValue: 'us-east-1')
   }
 
   environment {
