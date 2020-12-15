@@ -32,3 +32,10 @@ mkdir jenkins-data
 
 mkdir ~/.ssh/include
 
+# Create SSH config file in ~/.ssh
+cat <<EOF >> /home/ubuntu/.ssh/config
+Include ~/.ssh/include/*
+EOF
+
+# Put private Keys for Kubernetes Infra in /home/ubuntu/k8s-infra.pem
+# Change the permission of pem file by executing chmod 400 /home/ubuntu/k8s-infra.pem

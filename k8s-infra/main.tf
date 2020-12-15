@@ -25,6 +25,7 @@ module "virtual-machines" {
   k8s_security_group_id = module.networking.k8s_security_group_id
 }
 
+# Create ansible inventory file 
 data "template_file" "inventory" {
   template = file("${path.module}/templates/inventory.tpl")
 
@@ -44,5 +45,26 @@ resource "null_resource" "inventories" {
 
   triggers = {
     template = data.template_file.inventory.rendered
+  }
+}
+
+# Create SSH config file
+data "template_file" "ssh_config" {
+  template = file("${path.module}/templates/k8s-infra-config.tpl")
+
+  vars = {
+    public_ip_address_bastion = join("\n", module.virtual-machines.bastion_public_ip)
+    key_file_path             = join("\n", "/home/ubuntu/k8s-infra.pem")
+    private_ip_address_master = join("\n", module.virtual-machines.k8s_master_private_ip)
+  }
+}
+
+resource "null_resource" "ssh_configs" {
+  provisioner "local-exec" {
+    command = "echo '${data.template_file.ssh_config.rendered}' > /home/ubuntu/.ssh/include/k8s-infra.config"
+  }
+
+  triggers = {
+    template = data.template_file.ssh_config.rendered
   }
 }
