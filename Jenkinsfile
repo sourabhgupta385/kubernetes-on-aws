@@ -45,6 +45,12 @@ pipeline {
       }
     }
 
+    stage('Install Kubernetes Dependencies') {
+      steps {
+        sh "cd playbooks && ansible-playbook kube-dependencies.yml -i ./hosts"
+      }
+    }
+
     stage('Terraform Destroy') {
       input {
         message "Approval to delete Kubernetes Infra"
