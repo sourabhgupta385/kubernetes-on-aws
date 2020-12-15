@@ -40,7 +40,7 @@ data "template_file" "inventory" {
 
 resource "null_resource" "inventories" {
   provisioner "local-exec" {
-    command = "echo '${data.template_file.inventory.rendered}' > ../hosts"
+    command = "echo '${data.template_file.inventory.rendered}' > ../playbooks/hosts"
   }
 
   triggers = {
@@ -56,6 +56,7 @@ data "template_file" "ssh_config" {
     public_ip_address_bastion =  join("", module.virtual-machines.bastion_public_ip)
     key_file_path             =  join("", ["/home/ubuntu/k8s-infra.pem"])
     private_ip_address_master =  join("", module.virtual-machines.k8s_master_private_ip)
+    private_ip_address_worker =  join("", module.virtual-machines.k8s_worker_private_ip)
   }
 }
 

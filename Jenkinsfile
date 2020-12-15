@@ -39,6 +39,12 @@ pipeline {
       }
     }
 
+    stage('Check Ansible Connectivity') {
+      steps {
+        sh "cd playbooks && ansible-playbook test-connectivity.yml -i ./hosts"
+      }
+    }
+
     stage('Terraform Destroy') {
       input {
         message "Approval to delete Kubernetes Infra"
