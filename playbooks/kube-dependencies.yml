@@ -25,17 +25,17 @@
 
       - name: install kubelet
         apt:
-            name: kubelet=1.14.0-00
+            name: kubelet
             state: present
             update_cache: true
 
       - name: install kubeadm
         apt:
-            name: kubeadm=1.14.0-00
+            name: kubeadm
             state: present
 
       - name: install kubectl
         apt:
-            name: kubectl=1.14.0-00
+            name: kubectl
             state: present
             force: yes
