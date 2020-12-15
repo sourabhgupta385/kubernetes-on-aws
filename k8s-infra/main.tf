@@ -54,7 +54,7 @@ data "template_file" "ssh_config" {
 
   vars = {
     public_ip_address_bastion =  join("", module.virtual-machines.bastion_public_ip)
-    key_file_path             =  join("", "/home/ubuntu/k8s-infra.pem")
+    key_file_path             =  join("", ["/home/ubuntu/k8s-infra.pem"])
     private_ip_address_master =  join("", module.virtual-machines.k8s_master_private_ip)
   }
 }
