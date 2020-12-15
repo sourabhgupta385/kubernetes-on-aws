@@ -51,6 +51,12 @@ pipeline {
       }
     }
 
+    stage('Initialize Kubernetes Cluster & Install Flannel') {
+      steps {
+        sh "cd playbooks && ansible-playbook initialize-cluster.yml -i ./hosts"
+      }
+    }
+
     stage('Terraform Destroy') {
       input {
         message "Approval to delete Kubernetes Infra"
