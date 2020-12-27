@@ -39,7 +39,7 @@ variable "master_node_ami" {
 variable "master_node_instance_type" {
     description = "Instance type for Kubernetes Master Node"
     type        = string
-    default     = "t2.micro"
+    default     = "t2.medium"
 }
 
 variable "worker_node_ami" {
@@ -51,5 +51,5 @@ variable "worker_node_ami" {
 variable "worker_node_instance_type" {
     description = "Instance type for Kubernetes Worker Node"
     type        = string
-    default     = "t2.micro"
+    default     = "t2.medium"
 }
