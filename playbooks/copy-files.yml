@@ -1,11 +1,6 @@
 - hosts: "{{ groups['kube-master'][0] }}"
   tasks:
-      # - name: Transfer file from Master to Bastion
-      #   synchronize:
-      #       src: /home/ubuntu/.kube/config
-      #       dest: /home/ubuntu/.kube/config
-      #   delegate_to: "{{ groups['kube-master'][0] }}"
-      - name: Specifying a destination path
+      - name: download admin config file
         fetch:
             src: /home/ubuntu/.kube/config
             dest: /tmp/special/
@@ -13,7 +8,24 @@
 
 - hosts: bastion-servers
   tasks:
-      - name: Copy file with owner and permissions
+      - name: create .kube directory
+        become: yes
+        become_user: ubuntu
+        file:
+            path: $HOME/.kube
+            state: directory
+            mode: 0755
+
+      - name: copy admin config file
         copy:
             src: /tmp/special/config
             dest: /home/ubuntu/.kube/config
+            owner: ubuntu
+
+- hosts: 127.0.0.1
+  connection: local
+  tasks:
+      - name: delete admin config from local
+        file:
+            path: /tmp/special
+            state: absent
