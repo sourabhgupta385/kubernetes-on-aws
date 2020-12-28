@@ -22,6 +22,12 @@
             dest: /home/ubuntu/.kube/config
             owner: ubuntu
 
+      - name: install kubectl
+        apt:
+            name: kubectl
+            state: present
+            force: yes
+
 - hosts: 127.0.0.1
   connection: local
   tasks:
