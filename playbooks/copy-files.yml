@@ -23,17 +23,20 @@
             owner: ubuntu
 
       - name: add Kubernetes apt-key
+        become: yes
         apt_key:
             url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
             state: present
 
       - name: add Kubernetes APT repository
+        become: yes
         apt_repository:
             repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
             state: present
             filename: "kubernetes"
 
       - name: install kubectl
+        become: yes
         apt:
             name: kubectl
             state: present
