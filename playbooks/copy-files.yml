@@ -1,7 +1,12 @@
-- hosts: bastion-servers
+- hosts: "{{ groups['kube-master'][0] }}"
   tasks:
-      - name: Transfer file from Master to Bastion
-        synchronize:
+      # - name: Transfer file from Master to Bastion
+      #   synchronize:
+      #       src: /home/ubuntu/.kube/config
+      #       dest: /home/ubuntu/.kube/config
+      #   delegate_to: "{{ groups['kube-master'][0] }}"
+      - name: Specifying a destination path
+        fetch:
             src: /home/ubuntu/.kube/config
-            dest: /home/ubuntu/.kube/config
-        delegate_to: "{{ groups['kube-master'][0] }}"
+            dest: /tmp/special/
+            flat: yes
