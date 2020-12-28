@@ -10,3 +10,10 @@
             src: /home/ubuntu/.kube/config
             dest: /tmp/special/
             flat: yes
+
+- hosts: bastion-servers
+  tasks:
+      - name: Copy file with owner and permissions
+        copy:
+            src: /tmp/special/config
+            dest: /home/ubuntu/.kube/config
