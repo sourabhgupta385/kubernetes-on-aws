@@ -17,39 +17,39 @@ pipeline {
   
   stages {
     
-    stage('Terraform Init') {
-      steps {
-        sh "cd k8s-infra && terraform init -input=false"
-      }
-    }
+    // stage('Terraform Init') {
+    //   steps {
+    //     sh "cd k8s-infra && terraform init -input=false"
+    //   }
+    // }
     
-    stage('Terraform Plan') {
-      steps {
-        sh "cd k8s-infra && terraform plan -input=false -out k8s-infra-plan"
-      }
-    }
+    // stage('Terraform Plan') {
+    //   steps {
+    //     sh "cd k8s-infra && terraform plan -input=false -out k8s-infra-plan"
+    //   }
+    // }
     
-    stage('Terraform Apply') {
-      input {
-        message "Approval to create Kubernetes Infra"
-        ok "Approve"
-      }
-      steps {
-        sh "cd k8s-infra && terraform apply -auto-approve -input=false k8s-infra-plan"
-      }
-    }
+    // stage('Terraform Apply') {
+    //   input {
+    //     message "Approval to create Kubernetes Infra"
+    //     ok "Approve"
+    //   }
+    //   steps {
+    //     sh "cd k8s-infra && terraform apply -auto-approve -input=false k8s-infra-plan"
+    //   }
+    // }
 
-    stage('Check Ansible Connectivity') {
-      steps {
-        sh "cd playbooks && ansible-playbook test-connectivity.yml -i ./hosts"
-      }
-    }
+    // stage('Check Ansible Connectivity') {
+    //   steps {
+    //     sh "cd playbooks && ansible-playbook test-connectivity.yml -i ./hosts"
+    //   }
+    // }
 
-    stage('Install Kubernetes Dependencies') {
-      steps {
-        sh "cd playbooks && ansible-playbook kube-dependencies.yml -i ./hosts"
-      }
-    }
+    // stage('Install Kubernetes Dependencies') {
+    //   steps {
+    //     sh "cd playbooks && ansible-playbook kube-dependencies.yml -i ./hosts"
+    //   }
+    // }
 
     stage('Initialize Kubernetes Cluster & Install Flannel') {
       steps {
