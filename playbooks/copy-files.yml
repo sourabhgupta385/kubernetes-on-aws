@@ -1,0 +1,7 @@
+- hosts: bastion
+  tasks:
+    - name: Transfer file from Master to Bastion
+      synchronize:
+        src: /home/ubuntu/.kube/config
+        dest: /home/ubuntu/.kube/config
+      delegate_to: kube-master

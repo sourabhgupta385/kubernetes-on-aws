@@ -54,6 +54,7 @@ pipeline {
     stage('Initialize Kubernetes Cluster & Install Flannel') {
       steps {
         sh "cd playbooks && ansible-playbook initialize-cluster.yml -i ./hosts"
+        sh "cd playbooks && ansible-playbook copy-files.yml -i ./hosts"
       }
     }
 
