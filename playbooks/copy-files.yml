@@ -4,4 +4,4 @@
         synchronize:
             src: /home/ubuntu/.kube/config
             dest: /home/ubuntu/.kube/config
-        delegate_to: kube-master
+        delegate_to: kube-master[0]
