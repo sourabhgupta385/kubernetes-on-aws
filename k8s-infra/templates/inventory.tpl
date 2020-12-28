@@ -3,7 +3,7 @@ ${connection_strings_master}
 ${connection_strings_worker}
 ${public_ip_address_bastion}
 
-[bastion]
+[bastion-servers]
 ${public_ip_address_bastion}
 
 [kube-master]
