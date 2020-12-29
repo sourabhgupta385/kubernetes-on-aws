@@ -45,14 +45,14 @@ pipeline {
       }
     }
 
-    stage('Terraform Destroy') {
-      input {
-        message "Approval to delete Kubernetes Infra"
-        ok "Approve"
-      }
-      steps {
-        sh "cd k8s-infra && terraform destroy -auto-approve"
-      }
-    }
+    // stage('Terraform Destroy') {
+    //   input {
+    //     message "Approval to delete Kubernetes Infra"
+    //     ok "Approve"
+    //   }
+    //   steps {
+    //     sh "cd k8s-infra && terraform destroy -auto-approve"
+    //   }
+    // }
   }
 }
