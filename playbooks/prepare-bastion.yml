@@ -46,6 +46,7 @@
 
       - name: Remove taints on master to schedule pods
         shell: kubectl taint nodes --all node-role.kubernetes.io/master-
+        ignore_errors: true
 
       - name: Check nodes status
         shell: kubectl get nodes -o wide
