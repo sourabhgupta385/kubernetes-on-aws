@@ -12,9 +12,19 @@
 
 - hosts: kube_workers
   become: yes
+  gather_facts: false
   tasks:
       - name: Join cluster
         shell: "{{ hostvars[groups['kube_masters'][0]].join_command }} >> node_joined.txt"
         args:
             chdir: $HOME
             creates: node_joined.txt
+
+- hosts: "{{ groups['bastion_servers'][0] }}"
+  gather_facts: false
+  tasks:
+      - name: Check nodes status
+        shell: kubectl get nodes -o wide
+        register: nodes
+
+      - debug: var=nodes.stdout_lines

@@ -31,10 +31,10 @@ data "template_file" "inventory" {
 
   vars = {
     public_ip_address_bastion = join("\n", formatlist("bastion ansible_host=%s", module.virtual-machines.bastion_public_ip))
-    connection_strings_master = join("\n", formatlist("%s ansible_host=%s", module.virtual-machines.k8s_master_private_dns, module.virtual-machines.k8s_master_private_ip))
-    connection_strings_worker = join("\n", formatlist("%s ansible_host=%s", module.virtual-machines.k8s_worker_private_dns, module.virtual-machines.k8s_worker_private_ip))
-    list_master               = join("\n", module.virtual-machines.k8s_master_private_dns)
-    list_worker               = join("\n", module.virtual-machines.k8s_worker_private_dns)
+    connection_strings_master = join("\n", formatlist("master1 ansible_host=%s",  module.virtual-machines.k8s_master_private_ip))
+    connection_strings_worker = join("\n", formatlist("worker1 ansible_host=%s",  module.virtual-machines.k8s_worker_private_ip))
+    list_master               = join("\n", "master1")
+    list_worker               = join("\n", "worker1")
   }
 }
 

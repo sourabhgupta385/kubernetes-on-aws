@@ -48,12 +48,6 @@
         shell: kubectl taint nodes --all node-role.kubernetes.io/master-
         ignore_errors: true
 
-      - name: Check nodes status
-        shell: kubectl get nodes -o wide
-        register: nodes
-
-      - debug: var=nodes.stdout_lines
-
 - hosts: 127.0.0.1
   connection: local
   gather_facts: false
