@@ -7,7 +7,7 @@
             dest: /tmp/special/
             flat: yes
 
-- hosts: bastion-servers
+- hosts: bastion_servers
   gather_facts: false
   tasks:
       - name: create .kube directory

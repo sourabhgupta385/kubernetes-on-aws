@@ -13,3 +13,18 @@
       - { role: calico }
 
 - import_playbook: prepare-bastion.yml
+
+- hosts: kube_masters
+  gather_facts: false
+  tasks:
+      - name: Remove taints on master to schedule pods
+        shell: kubectl taint nodes --all node-role.kubernetes.io/master-
+        register: taint
+
+      - debug: var=taint.stdout_lines
+
+      - name: Check nodes status
+        shell: kubectl get nodes -o wide
+        register: nodes
+
+      - debug: var=nodes.stdout_lines
