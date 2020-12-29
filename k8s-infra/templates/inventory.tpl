@@ -3,16 +3,16 @@ ${connection_strings_master}
 ${connection_strings_worker}
 ${public_ip_address_bastion}
 
-[bastion-servers]
+[bastion_servers]
 ${public_ip_address_bastion}
 
-[kube-master]
+[kube_masters]
 ${list_master}
 
 
-[kube-worker]
+[kube_workers]
 ${list_worker}
 
-[k8s-cluster:children]
-kube-worker
-kube-master
+[k8s_cluster]
+kube-masters
+kube-workers
