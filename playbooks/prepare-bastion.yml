@@ -1,12 +1,14 @@
 - hosts: "{{ groups['kube-master'][0] }}"
+  gather_facts: false
   tasks:
-      - name: download admin config file
+      - name: Download kube config file
         fetch:
             src: /home/ubuntu/.kube/config
             dest: /tmp/special/
             flat: yes
 
 - hosts: bastion-servers
+  gather_facts: false
   tasks:
       - name: create .kube directory
         become: yes
@@ -16,26 +18,26 @@
             state: directory
             mode: 0755
 
-      - name: copy admin config file
+      - name: copy kube config file
         copy:
             src: /tmp/special/config
             dest: /home/ubuntu/.kube/config
             owner: ubuntu
 
-      - name: add Kubernetes apt-key
+      - name: Add Kubernetes apt-key
         become: yes
         apt_key:
             url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
             state: present
 
-      - name: add Kubernetes APT repository
+      - name: Add Kubernetes APT repository
         become: yes
         apt_repository:
             repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
             state: present
             filename: "kubernetes"
 
-      - name: install kubectl
+      - name: Install kubectl
         become: yes
         apt:
             name: kubectl
@@ -45,7 +47,7 @@
 - hosts: 127.0.0.1
   connection: local
   tasks:
-      - name: delete admin config from local
+      - name: Delete kube config from local
         file:
             path: /tmp/special
             state: absent

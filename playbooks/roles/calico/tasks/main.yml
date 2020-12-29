@@ -1,0 +1,16 @@
+---
+- name: Install Tigera Calico Operator
+  become: yes
+  become_user: ubuntu
+  shell: kubectl apply -f https://docs.projectcalico.org/manifests/tigera-operator.yaml >> tigera_operator_setup.txt
+  args:
+      chdir: $HOME
+      creates: tigera_operator_setup.txt
+
+- name: Install Calico
+  become: yes
+  become_user: ubuntu
+  shell: kubectl apply -f https://docs.projectcalico.org/manifests/custom-resources.yaml >> calico_custom_resources.txt
+  args:
+      chdir: $HOME
+      creates: calico_custom_resources.txt

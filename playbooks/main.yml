@@ -1,5 +1,15 @@
 - hosts: kube_masters:kube_workers
   become: yes
+  gather_facts: false
   roles:
       - { role: docker }
       - { role: kubernetes-dependencies }
+
+- import_playbook: initialize-cluster.yml
+
+- hosts: kube_masters
+  gather_facts: false
+  roles:
+      - { role: calico }
+
+- import_playbook: prepare-bastion.yml
