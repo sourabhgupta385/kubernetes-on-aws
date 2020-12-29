@@ -1,2 +1,33 @@
 ---
-# tasks file for kubernetes-dependencies
+- name: Install APT Transport HTTPS
+  apt:
+      name: apt-transport-https
+      state: present
+
+- name: Add Kubernetes apt-key
+  apt_key:
+      url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+      state: present
+
+- name: Add Kubernetes APT repository
+  apt_repository:
+      repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+      state: present
+      filename: "kubernetes"
+
+- name: Install kubelet
+  apt:
+      name: kubelet
+      state: present
+      update_cache: true
+
+- name: Install kubeadm
+  apt:
+      name: kubeadm
+      state: present
+
+- name: Install kubectl
+  apt:
+      name: kubectl
+      state: present
+      force: yes

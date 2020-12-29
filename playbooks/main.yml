@@ -1,4 +1,5 @@
-- hosts: k8s_cluster
+- hosts: kube_masters:kube_workers
   become: yes
   roles:
       - { role: docker }
+      - { role: kubernetes-dependencies }
