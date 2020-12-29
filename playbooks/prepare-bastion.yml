@@ -1,4 +1,4 @@
-- hosts: "{{ groups['kube-master'][0] }}"
+- hosts: "{{ groups['kube_masters'][0] }}"
   gather_facts: false
   tasks:
       - name: Download kube config file
