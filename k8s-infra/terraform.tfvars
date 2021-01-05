@@ -7,8 +7,8 @@ bastion_server_instance_type = "t2.micro"
 
 master_nodes_num          = 3
 master_node_ami           = "ami-00ddb0e5626798373"
-master_node_instance_type = "t2.micro"
+master_node_instance_type = "t2.medium"
 
 worker_nodes_num          = 3
 worker_node_ami           = "ami-00ddb0e5626798373"
-worker_node_instance_type = "t2.micro"
+worker_node_instance_type = "t2.medium"
