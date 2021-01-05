@@ -90,7 +90,7 @@ data "template_file" "ansible_vars" {
 
 resource "null_resource" "vars" {
   provisioner "local-exec" {
-    command = "echo '${data.template_file.inventory.rendered}' > ../playbooks/ansible-vars.yml"
+    command = "echo '${data.template_file.ansible_vars.rendered}' > ../playbooks/ansible-vars.yml"
   }
 
   triggers = {
