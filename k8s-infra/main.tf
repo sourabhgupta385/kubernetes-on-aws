@@ -48,7 +48,7 @@ data "template_file" "inventory" {
   template = file("${path.module}/templates/inventory.tpl")
 
   vars = {
-    public_ip_address_bastion = join("\n", formatlist("bastion%d ansible_host=%s", range(1, length(var.public_subnet_cidr_blocks) + 1), module.virtual-machines.bastion_public_ips))
+    public_ip_address_bastion = join("\n", formatlist("bastion%d ansible_host=%s", range(1, 3), module.virtual-machines.bastion_public_ips))
     connection_strings_master = join("\n", formatlist("master%d ansible_host=%s", range(1, var.master_nodes_num + 1), module.virtual-machines.k8s_master_private_ips))
     connection_strings_worker = join("\n", formatlist("worker%d ansible_host=%s", range(1, var.worker_nodes_num + 1), module.virtual-machines.k8s_worker_private_ips))
     list_master               = join("\n", formatlist("master%d", range(1, var.master_nodes_num + 1)))
