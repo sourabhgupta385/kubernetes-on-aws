@@ -9,28 +9,32 @@ resource "aws_vpc" "k8s_vpc" {
   }
 }
 
-# Create a Public Subnet
-resource "aws_subnet" "k8s_public_subnet" {
+# Create 2 public subnets
+resource "aws_subnet" "k8s_public_subnets" {
   vpc_id                  = aws_vpc.k8s_vpc.id
-  cidr_block              = var.public_subnet_cidr_block
+  count                   = length(var.aws_avail_zones)
+  availability_zone       = element(var.aws_avail_zones, count.index)
+  cidr_block              = element(var.public_subnet_cidr_blocks, count.index)
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "Kubernetes Public Subnet"
+    Name = "Kubernetes Public Subnet ${count.index + 1}"
   }
 }
 
-# Create a Private Subnet
-resource "aws_subnet" "k8s_private_subnet" {
-  vpc_id                  = aws_vpc.k8s_vpc.id
-  cidr_block              = var.private_subnet_cidr_block
+# Create 2 private subnets
+resource "aws_subnet" "k8s_private_subnets" {
+  vpc_id            = aws_vpc.k8s_vpc.id
+  count             = length(var.aws_avail_zones)
+  availability_zone = element(var.aws_avail_zones, count.index)
+  cidr_block        = element(var.private_subnet_cidr_blocks, count.index)
 
   tags = {
-    Name = "Kubernetes Private Subnet"
+    Name = "Kubernetes Private Subnet ${count.index + 1}"
   }
 }
 
-# Create a Internet Gateway
+# Create a internet gateway
 resource "aws_internet_gateway" "k8s_internet_gateway" {
   vpc_id = aws_vpc.k8s_vpc.id
 
@@ -39,29 +43,31 @@ resource "aws_internet_gateway" "k8s_internet_gateway" {
   }
 }
 
-# Create Elastic IP for NAT Gateway
-resource "aws_eip" "k8s_eip_nat_gateway" {
-  vpc      = true
+# Create elastic ips for NAT gateways
+resource "aws_eip" "k8s_eips_nat_gateway" {
+  vpc   = true
+  count = length(var.public_subnet_cidr_blocks)
 
   tags = {
-    Name = "Kubernetes NAT Gateway EIP"
+    Name = "Kubernetes NAT Gateway EIP ${count.index + 1}"
   }
 }
 
-# Create a NAT Gateway
-resource "aws_nat_gateway" "k8s_nat_gateway" {
-  allocation_id = aws_eip.k8s_eip_nat_gateway.id
-  subnet_id     = aws_subnet.k8s_public_subnet.id
+# Create 2 NAT gateways
+resource "aws_nat_gateway" "k8s_nat_gateways" {
+  count         = length(var.public_subnet_cidr_blocks)
+  allocation_id = element(aws_eip.k8s_eips_nat_gateway.*.id, count.index)
+  subnet_id     = element(aws_subnet.k8s_public_subnets.*.id, count.index)
 
   tags = {
-    Name = "Kubernetes NAT Gateway"
+    Name = "Kubernetes NAT Gateway ${count.index + 1}"
   }
 }
 
-# Create a Public Route Table
+# Create a public route table
 resource "aws_route_table" "k8s_public_route_table" {
-  vpc_id       = aws_vpc.k8s_vpc.id
-  
+  vpc_id = aws_vpc.k8s_vpc.id
+
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.k8s_internet_gateway.id
@@ -72,35 +78,38 @@ resource "aws_route_table" "k8s_public_route_table" {
   }
 }
 
-# Create a Private Route Table
-resource "aws_route_table" "k8s_private_route_table" {
-  vpc_id       = aws_vpc.k8s_vpc.id
-  
+# Create 2 private route tables
+resource "aws_route_table" "k8s_private_route_tables" {
+  vpc_id = aws_vpc.k8s_vpc.id
+  count  = length(var.private_subnet_cidr_blocks)
+
   route {
-    cidr_block      = "0.0.0.0/0"
-    nat_gateway_id  = aws_nat_gateway.k8s_nat_gateway.id
+    cidr_block     = "0.0.0.0/0"
+    nat_gateway_id = element(aws_nat_gateway.k8s_nat_gateways.*.id, count.index)
   }
 
   tags = {
-    Name = "K8s Private Route Table"
+    Name = "K8s Private Route Table ${count.index + 1}"
   }
 }
 
-# Associate Public Route Table with Public Subnet
+# Associate public route table with public subnets
 resource "aws_route_table_association" "k8s_rta_public" {
-  subnet_id      = aws_subnet.k8s_public_subnet.id
+  count          = length(var.public_subnet_cidr_blocks)
+  subnet_id      = element(aws_subnet.k8s_public_subnets.*.id, count.index)
   route_table_id = aws_route_table.k8s_public_route_table.id
 }
 
-# Associate Private Route Table with Private Subnet
+# Associate private route tables with private subnets
 resource "aws_route_table_association" "k8s_rta_private" {
-  subnet_id      = aws_subnet.k8s_private_subnet.id
-  route_table_id = aws_route_table.k8s_private_route_table.id
+  count          = length(var.private_subnet_cidr_blocks)
+  subnet_id      = element(aws_subnet.k8s_private_subnets.*.id, count.index)
+  route_table_id = element(aws_route_table.k8s_private_route_tables.*.id, count.index)
 }
 
-# Create a Security Group
+# Create a security group
 resource "aws_security_group" "k8s_security_group" {
-  vpc_id      = aws_vpc.k8s_vpc.id
+  vpc_id = aws_vpc.k8s_vpc.id
 
   tags = {
     Name = "Kubernetes Security Group"

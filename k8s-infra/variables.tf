@@ -1,26 +1,16 @@
-variable "aws_avail_zones" {
-  description = "AWS Availability Zones Used"
-  type        = list(string)
-}
-
-variable "k8s_vpc_id" {
-  description = "ID of VPC created in networing module"
+variable "vpc_cidr_block" {
+  description = "CIDR block for Kubernetes VPC"
   type        = string
 }
 
-variable "k8s_public_subnet_ids" {
-  description = "IDs of public subnets created in networing module"
-  type        = list(string)
+variable "public_subnet_cidr_blocks" {
+  description = "CIDR block for Kubernetes Public Subnets"
+  type        = list
 }
 
-variable "k8s_private_subnet_ids" {
-  description = "IDs of private subnets created in networing module"
-  type        = list(string)
-}
-
-variable "k8s_security_group_id" {
-  description = "ID of security group created in networing module"
-  type        = string
+variable "private_subnet_cidr_blocks" {
+  description = "CIDR block for Kubernetes Private Subnets"
+  type        = list
 }
 
 variable "bastion_server_ami" {
