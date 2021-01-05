@@ -80,7 +80,7 @@ resource "null_resource" "inventories" {
 }
 
 # Create ansible vars file 
-data "template_file" "ansible_vars" {
+data "template_file" "ansible-vars" {
   template = file("${path.module}/templates/ansible-vars.tpl")
 
   vars = {
@@ -88,12 +88,12 @@ data "template_file" "ansible_vars" {
   }
 }
 
-resource "null_resource" "vars" {
+resource "null_resource" "ansiblevars" {
   provisioner "local-exec" {
-    command = "echo '${data.template_file.ansible_vars.rendered}' > ../playbooks/ansible-vars.yml"
+    command = "echo '${data.template_file.ansible-vars.rendered}' > ../playbooks/ansible-vars.yml"
   }
 
   triggers = {
-    template = data.template_file.ansible_vars.rendered
+    template = data.template_file.ansible-vars.rendered
   }
 }
