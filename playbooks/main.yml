@@ -5,13 +5,13 @@
       key_file_path: "/home/ubuntu/k8s-infra.pem"
   roles:
       - { role: ssh-config }
-# - hosts: kube_masters:kube_workers
-#   become: yes
-#   gather_facts: false
-#   roles:
-#       - { role: docker }
-#       - { role: kubernetes-dependencies }
 
+- hosts: kube_masters:kube_workers
+  become: yes
+  gather_facts: false
+  roles:
+      - { role: docker }
+      - { role: kubernetes-dependencies }
 # - import_playbook: initialize-cluster.yml
 
 # - hosts: kube_masters
