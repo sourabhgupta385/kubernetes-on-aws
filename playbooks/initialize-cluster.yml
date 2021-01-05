@@ -1,11 +1,11 @@
-- hosts: kube_masters
+- hosts: "{{ groups['kube_masters'][0] }}"
   become: yes
   gather_facts: false
   vars_files:
       - ./ansible-vars.yml
   tasks:
       - name: Initialize Cluster
-        shell: kubeadm init --pod-network-cidr=192.168.0.0/16 >> cluster_initialized.txt
+        shell: kubeadm init --pod-network-cidr=192.168.0.0/16 --control-plane-endpoint "{{ load_balancer_dns }}:6443" --upload-certs >> cluster_initialized.txt
         args:
             chdir: $HOME
             creates: cluster_initialized.txt
