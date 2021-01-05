@@ -1,0 +1,5 @@
+---
+- name: Create SSH config file
+  template:
+      src: k8s-infra.config
+      dest: /home/ubuntu/.ssh/include/k8s-infra.config
