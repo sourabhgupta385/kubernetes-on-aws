@@ -1,0 +1,1 @@
+load_balancer_dns: ${k8s_api_elb_fqdn}

@@ -78,3 +78,22 @@ resource "null_resource" "inventories" {
     template = data.template_file.inventory.rendered
   }
 }
+
+# Create ansible vars file 
+data "template_file" "ansible_vars" {
+  template = file("${path.module}/templates/ansible-vars.tpl")
+
+  vars = {
+    k8s_api_elb_fqdn = module.load-balancers.k8s_api_elb_fqdn
+  }
+}
+
+resource "null_resource" "vars" {
+  provisioner "local-exec" {
+    command = "echo '${data.template_file.inventory.rendered}' > ../playbooks/ansible-vars.yml"
+  }
+
+  triggers = {
+    template = data.template_file.ansible_vars.rendered
+  }
+}

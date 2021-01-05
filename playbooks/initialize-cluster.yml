@@ -1,6 +1,8 @@
 - hosts: kube_masters
   become: yes
   gather_facts: false
+  vars_files:
+      - ./ansible-vars.yml
   tasks:
       - name: Initialize Cluster
         shell: kubeadm init --pod-network-cidr=192.168.0.0/16 >> cluster_initialized.txt
