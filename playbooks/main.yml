@@ -1,6 +1,8 @@
 - hosts: 127.0.0.1
   connection: local
   gather_facts: false
+  vars:
+      key_file_path: "/home/ubuntu/k8s-infra.pem"
   roles:
       - { role: ssh-config }
 # - hosts: kube_masters:kube_workers
