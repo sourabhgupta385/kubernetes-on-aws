@@ -2,6 +2,10 @@ output "bastion_public_ips" {
   value = aws_instance.bastion_server.*.public_ip
 }
 
+output "k8s_master_ids" {
+  value = aws_instance.k8s_masters.*.id
+}
+
 output "k8s_master_private_dns" {
   value = aws_instance.k8s_masters.*.private_dns
 }

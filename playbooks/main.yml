@@ -12,8 +12,8 @@
   roles:
       - { role: docker }
       - { role: kubernetes-dependencies }
-# - import_playbook: initialize-cluster.yml
 
+- import_playbook: initialize-cluster.yml
 # - hosts: kube_masters
 #   gather_facts: false
 #   roles:
