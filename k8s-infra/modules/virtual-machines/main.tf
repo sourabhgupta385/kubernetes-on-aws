@@ -8,7 +8,7 @@ resource "aws_instance" "bastion_server" {
   key_name               = "HomeLaptop"
 
   tags = {
-    Name = "Bastion Server"
+    Name = "Bastion Server ${count.index + 1}"
   }
 }
 
