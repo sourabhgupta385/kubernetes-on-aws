@@ -27,6 +27,7 @@ resource "aws_security_group_rule" "aws-allow-api-egress" {
 
 # AWS ELB for K8S API
 resource "aws_elb" "k8s_api_elb" {
+  name            = "Kubernetes API Load Balancer"
   subnets         = var.k8s_public_subnet_ids
   security_groups = [aws_security_group.k8s_api_elb_sg.id]
 
