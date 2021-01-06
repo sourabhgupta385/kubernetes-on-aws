@@ -35,3 +35,8 @@
         args:
             chdir: $HOME
             creates: node_joined.txt
+
+      - name: Print output
+        shell: cat $HOME/node_joined.txt
+        register: node_joined
+      - debug: var=node_joined.stdout_lines
