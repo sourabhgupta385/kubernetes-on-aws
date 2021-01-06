@@ -19,5 +19,6 @@
   gather_facts: false
   roles:
       - { role: calico }
-# - import_playbook: prepare-bastion.yml
+
+- import_playbook: prepare-bastion.yml
 # - import_playbook: prepare-workers.yml

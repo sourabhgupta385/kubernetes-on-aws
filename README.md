@@ -14,9 +14,10 @@ This project has:
 This project will create:
 
 -   An EC2 VM in default VPC which acts as a Jenkins slave
--   VPC with public and private subnet
--   Bastion host and NAT Gateway in public subnet
--   One master and one worker node in private subnet
+-   VPC with public and private subnets
+-   Bastion hosts and NAT Gateways in public subnets
+-   Kubernetes master and worker nodes in private subnets
+-   A load balancer for kubernetes API
 
 ## Architecture
 
