@@ -39,11 +39,11 @@ pipeline {
     //   }
     // }
 
-    stage('Install Kubernetes') {
-      steps {
-        sh "cd playbooks && ansible-playbook main.yml -i ./hosts"
-      }
-    }
+    // stage('Install Kubernetes') {
+    //   steps {
+    //     sh "cd playbooks && ansible-playbook main.yml -i ./hosts"
+    //   }
+    // }
 
     stage('Terraform Destroy') {
       input {

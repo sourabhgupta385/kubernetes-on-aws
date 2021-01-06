@@ -19,15 +19,15 @@
             chdir: $HOME
             creates: kubeadm_init_output.txt
 
-      - name: Get join command
-        shell: kubeadm token create --certificate-key {{ certificate_key.stdout_lines[0] }} --print-join-command
-        register: join_command_raw
-      - debug: var=join_command_raw.stdout_lines
-
       - name: Print output
         shell: cat $HOME/kubeadm_init_output.txt
         register: init_command_output
       - debug: var=init_command_output.stdout_lines
+
+      - name: Get join command
+        shell: kubeadm token create --certificate-key {{ hostvars[groups['kube_masters'][0]].certificate_key }} --print-join-command
+        register: join_command_raw
+      - debug: var=join_command_raw.stdout_lines
 
       # - name: Create .kube directory
       #   become: yes
