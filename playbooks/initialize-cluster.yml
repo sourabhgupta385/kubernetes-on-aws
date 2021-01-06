@@ -14,7 +14,7 @@
             certificate_key: "{{ certificate_key.stdout_lines[0] }}"
 
       - name: Initialize Cluster
-        shell: kubeadm init --pod-network-cidr=192.168.0.0/16 --control-plane-endpoint "{{ load_balancer_dns }}:6443" --upload-certs --certificate-key="{{ certificate_key.stdout_lines[0] }}" >> kubeadm_init_output.txt
+        shell: kubeadm init --pod-network-cidr=192.168.0.0/16 --control-plane-endpoint "{{ load_balancer_dns }}:6443" --upload-certs --certificate-key="{{ hostvars[groups['kube_masters'][0]].certificate_key }}" >> kubeadm_init_output.txt
         args:
             chdir: $HOME
             creates: kubeadm_init_output.txt
