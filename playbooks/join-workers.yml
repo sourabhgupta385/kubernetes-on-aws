@@ -1,0 +1,27 @@
+- hosts: kube_masters[0]
+  become: yes
+  gather_facts: false
+  tasks:
+      - name: Get join command
+        shell: kubeadm token create --print-join-command
+        register: worker_join_command_raw
+      - debug: var=worker_join_command_raw.stdout_lines
+
+      - name: Set join command as fact
+        set_fact:
+            worker_join_command: "{{ worker_join_command_raw.stdout_lines[0] }}"
+
+- hosts: kube_workers
+  become: yes
+  gather_facts: false
+  tasks:
+      - name: Join cluster
+        shell: "{{ hostvars[groups['kube_masters'][0]].worker_join_command }} >> node_joined.txt"
+        args:
+            chdir: $HOME
+            creates: node_joined.txt
+
+      - name: Print output
+        shell: cat $HOME/node_joined.txt
+        register: node_joined
+      - debug: var=node_joined.stdout_lines

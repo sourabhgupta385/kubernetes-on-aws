@@ -23,4 +23,14 @@
 - import_playbook: join-other-masters.yml
 
 - import_playbook: prepare-bastion.yml
-# - import_playbook: prepare-workers.yml
+
+- import_playbook: join-workers.yml
+
+- hosts: bastion_servers[0]
+  gather_facts: false
+  tasks:
+      - name: Check nodes status
+        shell: kubectl get nodes -o wide
+        register: nodes
+
+      - debug: var=nodes.stdout_lines
