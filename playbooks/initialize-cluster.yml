@@ -5,10 +5,12 @@
       - ./ansible-vars.yml
   tasks:
       - name: Initialize Cluster
-        shell: kubeadm init --pod-network-cidr=192.168.0.0/16 --control-plane-endpoint "{{ load_balancer_dns }}:6443" --upload-certs >> cluster_initialized.txt
-        args:
-            chdir: $HOME
-            creates: cluster_initialized.txt
+        shell: kubeadm init --pod-network-cidr=192.168.0.0/16 --control-plane-endpoint "{{ load_balancer_dns }}:6443" --upload-certs
+        register: init_command_raw
+      - debug: var=init_command_raw.stdout_lines
+        # args:
+        #     chdir: $HOME
+        #     creates: cluster_initialized.txt
 
       - name: Create .kube directory
         become: yes
