@@ -17,33 +17,33 @@ pipeline {
   
   stages {
     
-    // stage('Terraform Init') {
-    //   steps {
-    //     sh "cd k8s-infra && terraform init -input=false"
-    //   }
-    // }
+    stage('Terraform Init') {
+      steps {
+        sh "cd k8s-infra && terraform init -input=false"
+      }
+    }
     
-    // stage('Terraform Plan') {
-    //   steps {
-    //     sh "cd k8s-infra && terraform plan -input=false -out k8s-infra-plan"
-    //   }
-    // }
+    stage('Terraform Plan') {
+      steps {
+        sh "cd k8s-infra && terraform plan -input=false -out k8s-infra-plan"
+      }
+    }
     
-    // stage('Terraform Apply') {
-    //   input {
-    //     message "Approval to create Kubernetes Infra"
-    //     ok "Approve"
-    //   }
-    //   steps {
-    //     sh "cd k8s-infra && terraform apply -auto-approve -input=false k8s-infra-plan"
-    //   }
-    // }
+    stage('Terraform Apply') {
+      input {
+        message "Approval to create Kubernetes Infra"
+        ok "Approve"
+      }
+      steps {
+        sh "cd k8s-infra && terraform apply -auto-approve -input=false k8s-infra-plan"
+      }
+    }
 
-    // stage('Install Kubernetes') {
-    //   steps {
-    //     sh "cd playbooks && ansible-playbook main.yml -i ./hosts"
-    //   }
-    // }
+    stage('Install Kubernetes') {
+      steps {
+        sh "cd playbooks && ansible-playbook main.yml -i ./hosts"
+      }
+    }
 
     stage('Terraform Destroy') {
       input {

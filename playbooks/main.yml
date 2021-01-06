@@ -14,11 +14,12 @@
       - { role: kubernetes-dependencies }
 
 - import_playbook: initialize-cluster.yml
-# - hosts: "{{ groups['kube_masters'][0] }}"
-#   gather_facts: false
-#   roles:
-#       - { role: calico }
 
-# - import_playbook: join-other-masters.yml
+- hosts: kube_masters[0]
+  gather_facts: false
+  roles:
+      - { role: calico }
+
+- import_playbook: join-other-masters.yml
 # - import_playbook: prepare-bastion.yml
 # - import_playbook: prepare-workers.yml
