@@ -5,7 +5,6 @@
       - name: Get join command
         shell: kubeadm token create --certificate-key {{ hostvars[groups['kube_masters'][0]].certificate_key }} --print-join-command
         register: master_join_command_raw
-      - debug: var=master_join_command_raw.stdout_lines
 
       - name: Set join command as fact
         set_fact:
@@ -20,8 +19,3 @@
         args:
             chdir: $HOME
             creates: node_joined.txt
-
-      - name: Print output
-        shell: cat $HOME/node_joined.txt
-        register: node_joined
-      - debug: var=node_joined.stdout_lines

@@ -7,7 +7,6 @@
       - name: Generate certificate key
         shell: kubeadm certs certificate-key
         register: certificate_key
-      - debug: var=certificate_key.stdout_lines
 
       - name: Set certificate key as fact
         set_fact:
@@ -18,11 +17,6 @@
         args:
             chdir: $HOME
             creates: kubeadm_init_output.txt
-
-      - name: Print output
-        shell: cat $HOME/kubeadm_init_output.txt
-        register: init_command_output
-      - debug: var=init_command_output.stdout_lines
 
       - name: Create .kube directory
         become: yes
