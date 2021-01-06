@@ -2,21 +2,6 @@
   become: yes
   gather_facts: false
   tasks:
-      - name: Generate certificate key
-        shell: kubeadm certs certificate-key
-        register: certificate_key
-      - debug: var=certificate_key.stdout_lines
-
-      - name: Set certificate key as fact
-        set_fact:
-            certificate_key: "{{ certificate_key.stdout_lines[0] }}"
-
-      - name: Re-upload certificates
-        shell: kubeadm init phase upload-certs --upload-certs --certificate-key="{{ hostvars[groups['kube_masters'][0]].certificate_key }}" >> reupload_certs_output.txt
-        args:
-            chdir: $HOME
-            creates: reupload_certs_output.txt
-
       - name: Get join command
         shell: kubeadm token create --certificate-key {{ hostvars[groups['kube_masters'][0]].certificate_key }} --print-join-command
         register: master_join_command_raw
