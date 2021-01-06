@@ -1,28 +1,45 @@
-- hosts: "{{ groups['kube_masters'][0] }}"
+- hosts: kube_masters[0]
   become: yes
   gather_facts: false
   vars_files:
       - ./ansible-vars.yml
   tasks:
+      - name: Generate certificate key
+        shell: kubeadm certs certificate-key
+        register: certificate_key
+      - debug: var=certificate_key.stdout_lines
+
+      - name: Set certificate key as fact
+        set_fact:
+            certificate_key: "{{ certificate_key.stdout_lines[0] }}"
+
       - name: Initialize Cluster
-        shell: kubeadm init --pod-network-cidr=192.168.0.0/16 --control-plane-endpoint "{{ load_balancer_dns }}:6443" --upload-certs
-        register: init_command_raw
-      - debug: var=init_command_raw.stdout_lines
-        # args:
-        #     chdir: $HOME
-        #     creates: cluster_initialized.txt
+        shell: kubeadm init --pod-network-cidr=192.168.0.0/16 --control-plane-endpoint "{{ load_balancer_dns }}:6443" --upload-certs --certificate-key={{ certificate_key.stdout_lines[0] }} >> kubeadm_init_output.txt
+        args:
+            chdir: $HOME
+            creates: kubeadm_init_output.txt
 
-      - name: Create .kube directory
-        become: yes
-        become_user: ubuntu
-        file:
-            path: $HOME/.kube
-            state: directory
-            mode: 0755
+      - name: Get join command
+        shell: kubeadm token create --certificate-key {{ certificate_key.stdout_lines[0] }} --print-join-command
+        register: join_command_raw
+      - debug: var=join_command_raw.stdout_lines
 
-      - name: Copy admin.conf to user's kube config
-        copy:
-            src: /etc/kubernetes/admin.conf
-            dest: /home/ubuntu/.kube/config
-            remote_src: yes
-            owner: ubuntu
+      - name: Print output
+        shell: cat $HOME/kubeadm_init_output.txt
+        register: init_command_output
+      - debug: var=init_command_output.stdout_lines
+
+      # - name: Create .kube directory
+      #   become: yes
+      #   become_user: ubuntu
+      #   file:
+      #       path: $HOME/.kube
+      #       state: directory
+      #       mode: 0755
+
+      # - name: Copy admin.conf to user's kube config
+      #   copy:
+      #       src: /etc/kubernetes/admin.conf
+      #       dest: /home/ubuntu/.kube/config
+      #       remote_src: yes
+      #       owner: ubuntu
