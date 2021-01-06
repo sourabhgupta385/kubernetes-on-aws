@@ -19,19 +19,19 @@
 
       - name: Get join command
         shell: kubeadm token create --certificate-key {{ hostvars[groups['kube_masters'][0]].certificate_key }} --print-join-command
-        register: join_command_raw
-      - debug: var=join_command_raw.stdout_lines
+        register: master_join_command_raw
+      - debug: var=master_join_command_raw.stdout_lines
 
       - name: Set join command as fact
         set_fact:
-            join_command: "{{ join_command_raw.stdout_lines[0] }}"
+            master_join_command: "{{ master_join_command_raw.stdout_lines[0] }}"
 
 - hosts: kube_masters[1:]
   become: yes
   gather_facts: false
   tasks:
       - name: Join cluster
-        shell: "{{ hostvars[groups['kube_masters'][0]].join_command + '--control-plane' }} >> node_joined.txt"
+        shell: "{{ hostvars[groups['kube_masters'][0]].master_join_command }} >> node_joined.txt"
         args:
             chdir: $HOME
             creates: node_joined.txt
