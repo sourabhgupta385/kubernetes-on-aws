@@ -21,6 +21,10 @@ This project will create:
 
 ## Architecture
 
+<p align="center">
+  <img src="docs\HA Kubernetes Cluster.png" width="700" align="center">
+</p>
+
 ## How to Use
 
 -   Create one Jenkins slave by following the steps [here]()
