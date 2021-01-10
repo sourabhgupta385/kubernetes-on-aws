@@ -27,6 +27,6 @@ This project will create:
 
 ## How to Use
 
--   Create one Jenkins slave by following the steps [here]()
+-   Create one Jenkins slave by following the steps [here](jenkins-slave/README.md)
 -   Create one pipeline project in Jenkins and trigger the pipeline by supplying AWS credentials
 -   Provide approvals when needed in pipeline and your Kubernetes cluster will be ready in 7-8 minutes
